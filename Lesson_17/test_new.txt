@@ -1,0 +1,10 @@
+New string 0
+New string 1
+New string 2
+New string 3
+New string 4
+[Error] Critical Error
+New string 6
+New string 7
+New string 8
+New string 9
