@@ -22,8 +22,9 @@ from pymongo.results import UpdateResult
 # mongo_atlas_url = "mongodb+srv://user:user@cluster0.hthsl.mongodb.net"
 
 # это для домашней
-# mongo_atlas_url = "mongodb+srv://user:user@cluster0.czqkb.mongodb.net"
+
 # cluster = MongoClient(mongo_atlas_url)
+
 
 # all_db = cluster.list_database_names()
 # print(f"All Mongo DBs: {all_db}")
