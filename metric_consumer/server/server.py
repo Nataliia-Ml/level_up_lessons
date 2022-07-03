@@ -19,8 +19,8 @@ app = Flask(__name__)
 #     return jsonify(res_data)
 
 @app.route("/api/v1/metrics", methods=["POST"])
-def hello_world():
+def post_metrics():
     data = json.loads(request.data)
-    print(f"got metric: {data}")
+    print(f"Received metric: {data}")
     response_data = {"message": "metric_consumed", "code": "SUCCESS"}
     return make_response(jsonify(response_data), 201)

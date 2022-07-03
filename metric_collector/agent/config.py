@@ -1,3 +1,5 @@
+import uuid
+import socket
 from ruamel.yaml import YAML
 
 
@@ -6,6 +8,7 @@ class AgentConfig:
     interval = None
     cpu = False
     memory = False
+    hostname = socket.gethostname()
     host_identificator = 0
     agent_yaml = YAML()
     config = {}
@@ -17,6 +20,10 @@ class AgentConfig:
     def load_config_from_yaml(self) -> dict:
         with open(self.__config_file, "r") as f:
             return self.agent_yaml.load(f)
+
+    def load_config_to_yaml(self, config):
+        with open(self.__config_file, "w") as f:
+            self.agent_yaml.dump(config, f)
 
     def parse_config(self):
         class_variables = AgentConfig.__dict__.keys()
@@ -38,13 +45,30 @@ class AgentConfig:
         else:
             return value
 
-    def transform_interval(self):
-        pass
+    def transform_identificator(self, value) -> str:
+        if value != 0:
+            return value
+        else:
+            # Universally Unique Identifier (UUID) - 128 bit
+            _uuid = str(uuid.uuid4())
+            self.config["host_identificator"] = _uuid
+            self.load_config_to_yaml(self.config)
+            return _uuid
+
+    @staticmethod
+    def transform_interval(value: str) -> int:
+        multipliers = {"s": 1, "m": 60, "h": 3600}
+        SUFFIX_INDEX = -1
+
+        units = value[SUFFIX_INDEX]
+        interval_value = value[:SUFFIX_INDEX]
+
+        if not isinstance(interval_value, str) and not interval_value.isdigit():
+            raise TypeError(f"err: wrong type for interval: {value}")
+
+        multiplier = multipliers.get(units)
+        return int(interval_value) * multiplier
 
 
-    def transform_identificator(self):
-        pass
 
-
-
-ag = AgentConfig("./agent/configs/agent.yaml")
+ag = AgentConfig("/home/nata/Python/git_lessons15+/level_up_lessons/metric_collector/agent/configs/agent.yaml")
