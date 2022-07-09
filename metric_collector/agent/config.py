@@ -14,7 +14,7 @@ class AgentConfig:
     config = {}
 
     def __init__(self, configuration_file):
-        self.__config_file = configuration_file
+        self.__config_file = configuration_file # это файл с настройками
         self.parse_config()
 
     def load_config_from_yaml(self) -> dict:
@@ -26,12 +26,13 @@ class AgentConfig:
             self.agent_yaml.dump(config, f)
 
     def parse_config(self):
-        class_variables = AgentConfig.__dict__.keys()
-        self.config = self.load_config_from_yaml()
+        class_variables = AgentConfig.__dict__.keys()   # эта переменная будет содержать все переменные класса
+        self.config = self.load_config_from_yaml()  # этот метод считает наш ямл-файл и запишет все в  self.config
         # print(self.config)
         for key, value in self.config.items():
             if key in class_variables:
                 value = self.transform_values(key, value)
+                # в этом месте мы запишем все значения в атрибуты класса уже после всех изменений
                 setattr(AgentConfig, key, value)
 
     def transform_values(self, key, value):
@@ -39,7 +40,9 @@ class AgentConfig:
             "interval": self.transform_interval,
             "host_identificator": self.transform_identificator
         }
-        transformator = transformation_mapper.get(key)
+        transformator = transformation_mapper.get(key, None)
+        # если ключ-значение есть в мапере, то в transformator полетит self.transform_interval
+        # или self.transform_identificator. Их мы напишем ниже и они будут вызваны для value
         if transformator:
             return transformator(value)
         else:
@@ -50,7 +53,7 @@ class AgentConfig:
             return value
         else:
             # Universally Unique Identifier (UUID) - 128 bit
-            _uuid = str(uuid.uuid4())
+            _uuid = str(uuid.uuid4()) # тут получится уникальный идентификатор
             self.config["host_identificator"] = _uuid
             self.load_config_to_yaml(self.config)
             return _uuid
@@ -70,5 +73,7 @@ class AgentConfig:
         return int(interval_value) * multiplier
 
 
+# ag = AgentConfig("/home/nata/Python/git_lessons15+/level_up_lessons/metric_collector/agent/configs/agent.yaml")
+# ag = AgentConfig("./agent/configs/agent.yaml")
+# ag = AgentConfig("./configs/agent.yaml")
 
-ag = AgentConfig("/home/nata/Python/git_lessons15+/level_up_lessons/metric_collector/agent/configs/agent.yaml")

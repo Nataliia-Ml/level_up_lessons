@@ -10,6 +10,7 @@ parser.add_argument("--config", dest="config", required=True)
 
 parser_args = parser.parse_args()
 
+# Такую проверку добавили в демонстрационных целях. Так можно проверять значение порта
 if not parser_args.port.isdigit() and int(parser_args.port) not in range(65536):
     parser.error("port must be integer from 0 to 65535")
 
@@ -55,8 +56,3 @@ if __name__ == "__main__":
     scheduler = BlockingScheduler(standalone=True)
     scheduler.add_job(agent.job, "interval", seconds=agent.interval, id="agent_job")
     scheduler.start()
-
-'''
-дз
-flask mongoengine - изучить
-'''

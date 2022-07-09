@@ -8,12 +8,12 @@ from metric import Metric
 class AgentCollector(AgentConfig):
 
     def __init__(self, *args, **kwargs):
-        self.metrics: List[Metric] = []
+        self.metrics: List[Metric] = [] # в этот пустой спислк будут записаны метрики класса Metric
         super().__init__(*args, **kwargs)
 
     def collect_cpu_metrics(self):
         """
-        descr: represents the CPU time has spent in the given mode
+        descr: represents the CPU time has spent in the given mode (user/system/idle)
         units: seconds
         :return: None
         """
@@ -31,6 +31,7 @@ class AgentCollector(AgentConfig):
         ]
 
         for metric in data:
+            # мы проитерируемся по data и добавим в пустой список self.metrics объекты класса Metric с атрибутами
             self.metrics.append(Metric(*metric))
 
     def collect_memory_metrics(self):
@@ -53,7 +54,7 @@ class AgentCollector(AgentConfig):
             self.metrics.append(Metric(*metric))
 
 
-
-ac = AgentCollector(configuration_file="/home/nata/Python/git_lessons15+/level_up_lessons/metric_collector/agent/configs/agent.yaml")
+# ac = AgentCollector(configuration_file="/home/nata/Python/git_lessons15+/level_up_lessons/metric_collector/agent/configs/agent.yaml")
+ac = AgentCollector(configuration_file="./configs/agent.yaml")
 ac.collect_cpu_metrics()
 ac.collect_memory_metrics()
