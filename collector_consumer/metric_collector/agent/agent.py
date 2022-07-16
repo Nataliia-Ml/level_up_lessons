@@ -1,7 +1,9 @@
+import argparse
+
 import requests
 from apscheduler.schedulers.blocking import BlockingScheduler
+
 from collector import AgentCollector
-import argparse
 
 parser = argparse.ArgumentParser(description="Agent for local metrics collection")
 parser.add_argument("--ip", dest="ip", required=True)
@@ -26,25 +28,18 @@ class Agent(AgentCollector):
         self.collect_cpu_metrics()
         self.collect_memory_metrics()
 
-    def create_meta_fields(self):
-        return {
-            "source_name": self.source_name,
-            "hostname": self.hostname,
-            "host_id": self.host_identificator,
-        }
-
     def send_metrics(self):
-        while self.metrics:
-            metric = self.metrics.pop()
-            metric.meta = self.create_meta_fields()
+        while self.metrics_models:
+            metric_model = self.metrics_models.pop()
 
-            data = metric.to_json()
+            data = metric_model.dict()
             res = requests.post(metrics_endpoint, json=data)
+            print(f"[debug] send: {data}")
 
             if res.ok:
-                print(f"[debug] response {res.json()}")
+                print(f"[debug] response: {res.json()}")
             else:
-                print(f"[debug] bad response {res}")
+                print(f"[error] bad response: {res}")
 
     def job(self):
         self.collect()

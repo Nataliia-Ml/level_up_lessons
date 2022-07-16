@@ -5,4 +5,4 @@ memory: true
 # NEVER change <host_identificator> manually.
 # It is generated automatically by Agent.
 # It provides uniqness of you Agent Collector.
-host_identificator: bf0f7335-e572-4862-8a1f-83a1ebfa3f5e
+host_id: bf0f7335-e572-4862-8a1f-83a1ebfa3f5e
