@@ -1,4 +1,4 @@
-from ..database.db import db
+from .db import db
 
 
 class Units(db.Document):
@@ -9,14 +9,17 @@ class Model(db.Document):
     source_name = db.StringField(required=True, unique=False)
     hostname = db.StringField(required=True, unique=False)
     host_id = db.StringField(required=True, unique=True)
+    model = db.ListField(db.ReferenceField("Metric"))
 
+    # Эта переменная meta является внутренним параметром.
+    # Если ей передать "collection": "models", то наша коллекция будет называться models
     meta = {"collection": "models"}
 
 
 class Metric(db.Document):
     name = db.StringField(required=True, unique=False)
-    # values = db.ListField("MetricValues", default=list)
-    # units = db.ReferenceField("Units")
+    values = db.ReferenceField("MetricValues")
+    units = db.ReferenceField("Units")
     model = db.ReferenceField("Model")
 
     meta = {"collection": "metrics"}

@@ -110,11 +110,11 @@ ENV/
 env.bak/
 venv.bak/
 
-# Spyder metric_collector settings
+# Spyder collector settings
 .spyderproject
 .spyproject
 
-# Rope metric_collector settings
+# Rope collector settings
 .ropeproject
 
 # mkdocs documentation

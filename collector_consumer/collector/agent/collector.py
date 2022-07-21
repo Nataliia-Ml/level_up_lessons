@@ -12,7 +12,7 @@ class AgentCollector(AgentConfig):
     metric_keys = ("name", "value", "units")
 
     def __init__(self, *args, **kwargs):
-        self.metrics_models: List[MetricModel] = [] # в этот пустой спислк будут записаны Metric_Model
+        self.metrics_models: List[MetricModel] = [] # в этот пустой список будут записаны Metric_Model
         super().__init__(*args, **kwargs)
 
     def collect_cpu_metrics(self):
@@ -62,11 +62,12 @@ class AgentCollector(AgentConfig):
         for metric_values in data:
             metric_kwargs = dict(zip(self.metric_keys, metric_values))
             metric = Metric.parse_obj(metric_kwargs)
-            metric_model = MetricModel(ts=int(time()),metric=metric, meta=self.meta)
+            # не совсем понятен механизм передачи metric в класс MetricModel
+            metric_model = MetricModel(ts=int(time()), metric=metric, meta=self.meta)
             self.metrics_models.append(metric_model)
 
 
-# ac = AgentCollector(configuration_file="/home/nata/Python/git_lessons15+/level_up_lessons/metric_collector/agent/configs/agent.yaml")
-ac = AgentCollector(configuration_file="configs/agent.yaml")
-ac.collect_cpu_metrics()
-ac.collect_memory_metrics()
+# ac = AgentCollector(configuration_file="/home/nata/Python/git_lessons15+/level_up_lessons/collector_consumer/collector/agent/configs/__agent.yaml")
+# ac = AgentCollector(configuration_file="configs/__agent.yaml")
+# ac.collect_cpu_metrics()
+# ac.collect_memory_metrics()

@@ -33,8 +33,8 @@ class Agent(AgentCollector):
             metric_model = self.metrics_models.pop()
 
             data = metric_model.dict()
-            res = requests.post(metrics_endpoint, json=data)
             print(f"[debug] send: {data}")
+            res = requests.post(metrics_endpoint, json=data)
 
             if res.ok:
                 print(f"[debug] response: {res.json()}")

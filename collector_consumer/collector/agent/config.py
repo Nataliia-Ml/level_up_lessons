@@ -80,10 +80,11 @@ class AgentConfig:
             "hostname": self.hostname,
             "host_id": self.host_id
         }
+        # С помощью встроенного метода parse_obj для класса, который наследуется от BaseModel,
+        # мы спарсим объект с данными из словаря meta_kwargs даже без распаковки
         return Meta.parse_obj(meta_kwargs)
 
 
-# ag = AgentConfig("/home/nata/Python/git_lessons15+/level_up_lessons/metric_collector/agent/configs/agent.yaml")
-# ag = AgentConfig("./agent/configs/agent.yaml")
-# ag = AgentConfig("./configs/agent.yaml")
+# ag = AgentConfig("/home/nata/Python/git_lessons15+/level_up_lessons/collector_consumer/collector/agent/configs/__agent.yaml")
+# ag = AgentConfig("./configs/__agent.yaml")
 
